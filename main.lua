@@ -27,7 +27,7 @@ local updateTime = 0
 function love.update(dt)
   local time = love.timer.getTime()
   
-  player:update()
+  --player:update()
 
   pairDisplayTargetAlpha = player:pressed 'move' and 255
                           or player:released 'move' and 255

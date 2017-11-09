@@ -75,7 +75,12 @@ end
 
 local Player = {}
 
-function Player:update()
+function Player:_update()
+  if self._time == love.timer.getTime() then
+    return false
+  end
+  self._time = love.timer.getTime()
+
   local keyboardUsed = false
   local joystickUsed = false
 
@@ -163,6 +168,7 @@ function Player:update()
 end
 
 function Player:getRaw(name)
+  self:_update()
   if self._pairs[name] then
     return self._pairs[name].rawX, self._pairs[name].rawY
   else
@@ -171,6 +177,7 @@ function Player:getRaw(name)
 end
 
 function Player:get(name)
+  self:_update()
   if self._pairs[name] then
     return self._pairs[name].x, self._pairs[name].y
   else
@@ -179,6 +186,7 @@ function Player:get(name)
 end
 
 function Player:down(name)
+  self:_update()
   if self._pairs[name] then
     return self._pairs[name].down
   else
@@ -187,6 +195,7 @@ function Player:down(name)
 end
 
 function Player:pressed(name)
+  self:_update()
   if self._pairs[name] then
     return self._pairs[name].pressed
   else
@@ -195,6 +204,7 @@ function Player:pressed(name)
 end
 
 function Player:released(name)
+  self:_update()
   if self._pairs[name] then
     return self._pairs[name].released
   else
@@ -203,11 +213,13 @@ function Player:released(name)
 end
 
 function Player:getActiveDevice()
+  self:_update()
   return self._activeDevice
 end
 
 function baton.new(config)
   local player = setmetatable({
+    _time = love.timer.getTime(),
     _controls = {},
     _pairs = {},
     controls = config.controls,
